@@ -1,0 +1,53 @@
+Chaosmap 1.0
+
+Coded by Balle
+http://www.datenterrorist.de
+
+////[ Disclaimer
+
+Use this tool at your own risk and only on your own webservers otherwise you may be
+breaking the law and the author doesnt feel responsable for your actions. ;)
+
+
+////[ Whats this all about?
+
+Chaosmap is just another network mapping tool.
+It can be used to lookup DNS names with a dictionary with or without using a salt. 
+Salting for DNS means it will append numbers from 1-9 to the name in the dictionary with or without 
+a - and _ or a leading 0. Salting for Web stuff will try double slashes and some directory traversal tricks.
+You can do reverse dns lookups of a whole ip range (with optional whois lookup) or
+make a dictionary scan for hidden paths on one webserver or a range of ip addresses.
+Optionally you can encode the path with url encoding.
+Feel free to send patches, bug reports, dictionaries or beer to balle@chaostal.de
+
+
+////[ Installation
+
+You need Python 2.6 or higher.
+
+
+///[ Example usage:
+
+# dictionary based dns lookups with salt (appends 1 and -1 and so on)
+./chaosmap.py -f dict -d your_domain -n -s
+
+# scan your webserver for hidden paths with url encoding via a http proxy
+./chaosmap.py -f dict -d your_domain -w -u -P 192.168.1.1:8080
+
+# reverse dns and whois lookup of ip range
+./chaosmap.py -i 192.168.1.1-192.168.254.254 -W -n
+
+# dictionary scan of web server on port 8080 with salting
+./chaosmap.py -f dict_file -d your_domain -w -p 8080 -s
+
+# scan a list of ip addresses for web servers with hidden paths with a delay of 3 seconds
+./chaosmap.py -i 192.168.1.1-192.168.254.254 -f dict_file -w -D 3
+
+
+////[ Licenses and Copyrights
+
+Chaosmap is licensed under GPLv3 
+httplib2 Copyright (c) 2006 by Joe Gregorio
+socks Python library copyright by Dan Haim (see lib/socks-LICENSE.txt)
+cymruwhois by Justin Azoff licensed under MIT
+
