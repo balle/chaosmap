@@ -36,6 +36,8 @@ start_ip = None
 stop_ip = None
 web_proxy = None
 web_port = "80"
+proxy_user = None
+proxy_pass = None
 delay = 0
 name_lookup = False
 salt = False
@@ -53,6 +55,7 @@ def usage():
 	Guess what ;)
 	"""
 	print sys.argv[0] + """
+	-C <proxy_user:password>
 	 -f <dict_file> 
 	 -d <domain> 
 	 -n(ame_lookup) 
@@ -227,6 +230,8 @@ for opt in opts:
 		web_port = opt[1]
 	elif opt[0] == "-P":
 		web_proxy = opt[1]
+	elif opt[0] == "-C":
+			proxy_user, proxy_pass = opt[1].split(":")
 	elif opt[0] == "-s":
 		salt = True
 	elif opt[0] == "-u":
@@ -244,8 +249,11 @@ if web_proxy != None:
 			proxy_type = socks.PROXY_TYPE_HTTP,
 			proxy_host = proxy_ip,
 			proxy_port = int(proxy_port),
-			proxy_rdns = True
+			proxy_rdns = True,
+			proxy_username = proxy_user,
+			proxy_password = proxy_pass
 		)
+			
 		web_client = httplib2.Http(proxy_info = proxy_info)
 	else:
 		print "Proxy settings should be proxy_ip:port"
