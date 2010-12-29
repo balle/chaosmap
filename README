@@ -1,4 +1,4 @@
-Chaosmap 1.0
+Chaosmap
 
 Coded by Balle
 http://www.datenterrorist.de
@@ -11,13 +11,16 @@ breaking the law and the author doesnt feel responsable for your actions. ;)
 
 ////[ Whats this all about?
 
-Chaosmap is just another network mapping tool.
+Chaosmap is an information gathering tool and dns / whois / web server scanner.
 It can be used to lookup DNS names with a dictionary with or without using a salt. 
 Salting for DNS means it will append numbers from 1-9 to the name in the dictionary with or without 
 a - and _ or a leading 0. Salting for Web stuff will try double slashes and some directory traversal tricks.
 You can do reverse dns lookups of a whole ip range (with optional whois lookup) or
 make a dictionary scan for hidden paths on one webserver or a range of ip addresses.
-Optionally you can encode the path with url encoding.
+Optionally you can encode the path with url encoding and with google dict lookup mode
+chaosmap will first try to find the path on Google and only query the webserver if
+google has no search result. Last but not least it can be used to extract email addresses
+from domains using a Google search.
 Feel free to send patches, bug reports, dictionaries or beer to balle@chaostal.de
 
 
@@ -40,8 +43,18 @@ You need Python 2.6 or higher.
 # dictionary scan of web server on port 8080 with salting
 ./chaosmap.py -f dict_file -d your_domain -w -p 8080 -s
 
+# dictionary scan of web server only with google search
+./chaosmap.py -f dict_file -d your_domain -g
+
+# dictionary scan of web server first with google and if google doesnt
+# return a result with direct webserver scanning afterwards
+./chaosmap.py -f dict_file -d your_domain -g -w
+
 # scan a list of ip addresses for web servers with hidden paths with a delay of 3 seconds
 ./chaosmap.py -i 192.168.1.1-192.168.254.254 -f dict_file -w -D 3
+
+# google email search for domain
+./chaosmap.py -d your_domain -e
 
 
 ////[ Licenses and Copyrights
@@ -50,4 +63,5 @@ Chaosmap is licensed under GPLv3
 httplib2 Copyright (c) 2006 by Joe Gregorio
 socks Python library copyright by Dan Haim (see lib/socks-LICENSE.txt)
 cymruwhois by Justin Azoff licensed under MIT
-
+google Python lib Copyright (c) 2009-2010, Mario Vilas
+BeautifulSoup Copyright (c) 2004-2010, Leonard Richardson

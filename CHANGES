@@ -1,0 +1,9 @@
+Changes between 1.0 and 1.1
+ - base url support
+ - http proxy support
+ - https support
+ - configure web port
+ - credentials for web server access
+ - google dict scan
+ - google email search
+ 
