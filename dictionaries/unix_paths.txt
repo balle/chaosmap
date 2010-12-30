@@ -1,0 +1,16 @@
+.bash_history
+.sh_history
+.mysql_history
+etc
+nagios
+bigbrother
+bb
+bigsister
+ntop
+webmin
+cacti
+.mc
+.ncftp
+acid
+base
+nagios

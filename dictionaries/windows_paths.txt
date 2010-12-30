@@ -1,0 +1,7 @@
+cmd.exe
+winnt
+windows
+temp
+ws_ftp.ini
+WS_FTP.ini
+citrix

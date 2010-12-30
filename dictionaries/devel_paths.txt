@@ -1,0 +1,17 @@
+test
+testing
+dev
+devel
+development
+.svn
+CVS
+.git
+src
+.project
+patches
+updates
+db
+sql
+mysql
+phpmyadmin
+phpMyAdmin
