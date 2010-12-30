@@ -59,7 +59,7 @@ You need Python 2.6 or higher.
 # google email search for domain
 ./chaosmap.py -d your_domain -e
 
-# Just query google for list of domains
+# Just query google with some google hacking queries for list of domains
 ./chaosmap.py -f dictionaries/google_queries.txt -g -Q -d domain1,domain2
 
 # Scan webserver of domain with a list of dictionaries
