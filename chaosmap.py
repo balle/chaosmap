@@ -17,7 +17,7 @@ version = "1.1"
 import sys
 import getopt
 import re
-from socket import gethostbyname, gethostbyaddr, herror, gaierror
+import socket
 from random import randint
 from time import sleep
 import urllib2
@@ -98,8 +98,8 @@ def do_dns_lookup(lookup_name):
 	do the actual dns lookup or print error
 	"""
 	try:
-		print lookup_name + ": " + gethostbyname(lookup_name)
-	except gaierror, e:
+		print lookup_name + ": " + socket.gethostbyname(lookup_name)
+	except socket.gaierror, e:
 		print lookup_name + ": " + str(e)
 
 def do_url_encoding(path):
@@ -170,8 +170,8 @@ def dns_reverse_lookup():
 		i = randint(0, len(ips) - 1)
 		lookup_ip = str(ips[i])
 		try:
-			print lookup_ip + ": " + str(gethostbyaddr(lookup_ip)[0])
-		except herror, e:
+			print lookup_ip + ": " + str(socket.gethostbyaddr(lookup_ip)[0])
+		except socket.herror, e:
 			print lookup_ip + ": " + str(e)
 		except socket.error, e:
 			print lookup_ip + ": " + str(e)
