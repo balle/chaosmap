@@ -5,23 +5,26 @@ http://www.datenterrorist.de
 
 ////[ Disclaimer
 
-Use this tool at your own risk and only on your own webservers otherwise you may be
-breaking the law and the author doesnt feel responsable for your actions. ;)
+Use this tool at your own risk and only on your own webservers and domains 
+otherwise you may be breaking the law and the author doesnt feel responsable 
+for your actions. ;)
 
 
 ////[ Whats this all about?
 
 Chaosmap is an information gathering tool and dns / whois / web server scanner.
 It can be used to lookup DNS names with a dictionary with or without using a salt. 
-Salting for DNS means it will append numbers from 1-9 to the name in the dictionary with or without 
-a - and _ or a leading 0. Salting for Web stuff will try double slashes and some directory traversal tricks.
+Salting for DNS means it will append numbers from 1-9 to the name in the dictionary 
+with or without a - and _ or a leading 0. Salting for Web stuff will try double 
+slashes and some directory traversal tricks.
 You can do reverse dns lookups of a whole ip range (with optional whois lookup) or
 make a dictionary scan for hidden paths on one webserver or a range of ip addresses.
 Optionally you can encode the path with url encoding and with google dict lookup mode
 chaosmap will first try to find the path on Google and only query the webserver if
 google has no search result. Last but not least it can be used to extract email addresses
-from domains using a Google search.
-Feel free to send patches, bug reports, dictionaries or beer to balle@chaostal.de
+from domains using a Google search or perform a list of Google Hacking queries on 
+your domain.
+Feel free to send patches, bug reports, dictionary additions or beer to balle@chaostal.de
 
 
 ////[ Installation
@@ -55,6 +58,12 @@ You need Python 2.6 or higher.
 
 # google email search for domain
 ./chaosmap.py -d your_domain -e
+
+# Just query google for list of domains
+./chaosmap.py -f dictionaries/google_queries.txt -g -Q -d domain1,domain2
+
+# Scan webserver of domain with a list of dictionaries
+./chaosmap.py -f dict1,dict2,dict3 -d your_domain -w
 
 
 ////[ Licenses and Copyrights

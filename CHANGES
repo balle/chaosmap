@@ -1,3 +1,8 @@
+Changes between 1.1 and 1.2
+ - you can now specify a list of dictionaries and domains
+ - google hacks query mode
+ - more dictionaries
+ 
 Changes between 1.0 and 1.1
  - base url support
  - http proxy support
