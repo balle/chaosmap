@@ -33,8 +33,8 @@ import google
 
 ###[ Globals
 
-domain = None
-dict_file = None
+domains = None
+dict_files = None
 start_ip = None
 stop_ip = None
 web_proxy = None
@@ -52,6 +52,7 @@ shut_up = False
 web_lookup = False
 email_lookup = False
 google_dict_search = False
+google_query_dict = False
 whois = False
 whois_client = WhoisClient()
 web_client = httplib2.Http()
@@ -70,23 +71,24 @@ def usage():
 	-b <base_url>
 	-c <web_user:password>
 	-C <proxy_user:password>
-	 -d <domain> 
-	 -D <delay_in_sec>
-	 -e(mail_search)
-	 -f <dict_file> 
-	 -g(oogle_dict_search)
-	 -G(oogle_only)
-	 -h(elp)
-	 -i <start_ip>-<stop_ip> 
-	 -n(ame_lookup) 
-	 -p <webserver_port> 
-	 -P <proxy_ip:port>
-	 -q(uiet)
-	 -s(alt) 
-	 -u(rlencode)
-	 -v(ersion) 
-	 -w(eb) 
-	 -W(hois)"""
+	-d <domains,domain2,domain3> 
+	-D <delay_in_sec>
+	-e(mail_search)
+	-f <dict_file,ddict_files,dict_file3> 
+	-g(oogle_dict_search)
+	-G(oogle_only)
+	-h(elp)
+	-i <start_ip>-<stop_ip> 
+	-n(ame_lookup) 
+	-p <webserver_port> 
+	-P <proxy_ip:port>
+	-q(uiet)
+	-Q (input in dict are google hack queries)
+	-s(alt) 
+	-u(rlencode)
+	-v(ersion) 
+	-w(eb) 
+	-W(hois)"""
 
 	print "\nFor examples see the README"
 	sys.exit(1)
@@ -109,28 +111,33 @@ def dns_dict_lookup():
 	make a dns dictionay lookups
 	if salt is true construct names like www2 www-2 www02 
 	"""
-	fh = open(dict_file, "r")
-
-	for word in fh.readlines():
-		do_dns_lookup(word.strip() + "." + domain)
-
-		if salt == True:
-			salt_chars = ["", "0", "-", "-0", "_", "_0"]
+	for file in dict_files.split(","):
+		try:
+			fh = open(file, "r")
 			salted_dns = []
 
-			for chars in salt_chars:
-				for i in range(1, 9):
-					salted_dns.append(word.strip() + chars + str(i) + "." + domain)
+			if salt == True:
+				salt_chars = ["", "0", "-", "-0", "_", "_0"]
 
-			while len(salted_dns) > 0:
-				i = randint(0, len(salted_dns) - 1)
-				do_dns_lookup(salted_dns[i])
-				del salted_dns[i]
+				for chars in salt_chars:
+					for i in range(1, 9):
+						salted_dns.append(word.strip() + chars + str(i) + "." + domain)
 
-				if delay > 0:
-					sleep(delay)
+			for word in fh.readlines():
+				for domain in domains.split(","):
+					do_dns_lookup(word.strip() + "." + domain)
 
-	fh.close()
+					while len(salted_dns) > 0:
+						i = randint(0, len(salted_dns) - 1)
+						do_dns_lookup(salted_dns[i])
+						del salted_dns[i]
+
+						if delay > 0:
+							sleep(delay)
+
+			fh.close()
+		except IOError:
+			print "Cannot read dictionary " + file
 
 def get_ips(start_ip, stop_ip):
 	"""
@@ -190,13 +197,14 @@ def do_web_lookup(host, path):
 	if salt == True:
 		chars = ["/", "//", "/mooh/../", "/./"]
 
-#TODO: debug
-#	if base_url != "":
-#		base_url += "/"
+	if base_url != "" and re.search("/$", base_url) == None:
+		base_url += "/"
 
 	if google_dict_search:
 		if not shut_up: print "Google dict search " + path + " on " + host
-		results = google.search("+site:" + host + " inurl:" + base_url + "/" + path, stop = 3)
+		google_search_string = "+site:" + host + " inurl:" + base_url + "/" + path
+		if google_query_dict: google_search_string = "+site:" + host + " " + path
+		results = google.search(google_search_string, stop = 3)
 
 		try:
 			for link in results:
@@ -272,27 +280,31 @@ def scan_webserver():
 	"""
 	scan a web server for hidden paths based on a dictionary
 	"""
-	fh = open(dict_file, "r")
+	for file in dict_files.split(","):
+		try:
+			fh = open(file, "r")
 
-	for word in fh.readlines():
-		path = word.strip()
+			for word in fh.readlines():
+				path = word.strip()
 
-		if urlencode:
-			path = do_url_encoding(path)
+				if urlencode:
+					path = do_url_encoding(path)
 
-		if domain != None:
-			do_web_lookup(domain, path)
-		else:
-			ips = get_ips(start_ip, stop_ip)
+				if domains != None:
+					for domain in domains.split(","):
+						do_web_lookup(domain, path)
+				else:
+					ips = get_ips(start_ip, stop_ip)
 
-			while len(ips) > 0:
-				i = randint(0, len(ips) - 1)
-				lookup_ip = str(ips[i])
-				del ips[i]
-				do_web_lookup(lookup_ip, path)
+					while len(ips) > 0:
+						i = randint(0, len(ips) - 1)
+						lookup_ip = str(ips[i])
+						del ips[i]
+						do_web_lookup(lookup_ip, path)
 
-	fh.close()
-
+			fh.close()
+		except IOError:
+			print "Cannot read dictionary " + file
 
 ###[ MAIN PART
 
@@ -300,7 +312,7 @@ if(len(sys.argv) < 1):
 	usage();
 
 try:
-	cmd_opts = "b:c:C:d:D:ef:gi:np:P:suvwW"
+	cmd_opts = "b:c:C:d:D:ef:gi:np:P:qQsuvwW"
 	opts, args = getopt.getopt(sys.argv[1:], cmd_opts)
 except getopt.GetoptError:
 	usage()
@@ -313,13 +325,13 @@ for opt in opts:
 	elif opt[0] == "-C":
 			proxy_user, proxy_pass = opt[1].split(":")
 	elif opt[0] == "-d":
-		domain = opt[1]
+		domains = opt[1]
 	elif opt[0] == "-D":
 		delay = int(opt[1])
 	elif opt[0] == "-e":
 		email_lookup = True
 	elif opt[0] == "-f":
-		dict_file = opt[1]
+		dict_files = opt[1]
 	elif opt[0] == "-g":
 		google_dict_search = True
 	elif opt[0] == "-h":
@@ -334,6 +346,8 @@ for opt in opts:
 		web_proxy = opt[1]
 	elif opt[0] == "-q":
 		shut_up = True
+	elif opt[0] == "-Q":
+		google_query_dict = True
 	elif opt[0] == "-s":
 		salt = True
 	elif opt[0] == "-u":
@@ -370,12 +384,12 @@ if web_user != None and web_pass != None:
 if(start_ip != None and stop_ip != None):
 	if name_lookup:
 		dns_reverse_lookup()
-	elif web_lookup == True and dict_file != None:
+	elif web_lookup == True and dict_files != None:
 		scan_webserver()
 	else:
 		print "You need to either specify -n for dns or -w for web server mapping"
 		sys.exit(1)
-elif(domain != None and dict_file != None):
+elif(domains != None and dict_files != None):
 	if name_lookup:
 		dns_dict_lookup()
 	elif web_lookup:
@@ -385,8 +399,8 @@ elif(domain != None and dict_file != None):
 	else:
 		print "You need to either specify -n for dns or -w for web server mapping"
 		sys.exit(1)
-elif(domain != None and email_lookup):
-	do_google_mail_search(domain)
+elif(domains != None and email_lookup):
+	do_google_mail_search(domains)
 else:
 	usage()
 
