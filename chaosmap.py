@@ -197,8 +197,8 @@ def do_web_lookup(host, path):
 	if salt == True:
 		chars = ["/", "//", "/mooh/../", "/./"]
 
-	if base_url != "" and re.search("/$", base_url) == None:
-		base_url += "/"
+#	if base_url != "" and re.search("/$", base_url) == None:
+#		base_url += "/"
 
 	if google_dict_search:
 		if not shut_up: print "Google dict search " + path + " on " + host
