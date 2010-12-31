@@ -10,7 +10,7 @@
 # http://www.datenterrorist.de
 # License GPLv3
 
-version = "1.1"
+version = "1.2"
 
 ###[ Import modules
 
@@ -308,7 +308,7 @@ def scan_webserver():
 
 ###[ MAIN PART
 
-if(len(sys.argv) < 1):
+if(len(sys.argv) < 2):
 	usage();
 
 try:
