@@ -1,8 +1,15 @@
+Changes between 1.3 and 1.4
+ - better backup bruteforce mode
+ - updated dictionaries
+
+Changes between 1.2 and 1.3
+ - backup bruteforce modus with -B
+
 Changes between 1.1 and 1.2
  - you can now specify a list of dictionaries and domains
  - google hacks query mode
  - more dictionaries
- 
+
 Changes between 1.0 and 1.1
  - base url support
  - http proxy support
@@ -11,4 +18,3 @@ Changes between 1.0 and 1.1
  - credentials for web server access
  - google dict scan
  - google email search
- 

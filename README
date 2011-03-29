@@ -5,31 +5,31 @@ http://www.datenterrorist.de
 
 ////[ Disclaimer
 
-Use this tool at your own risk and only on your own webservers and domains 
-otherwise you may be breaking the law and the author doesnt feel responsable 
+Use this tool at your own risk and only on your own webservers and domains
+otherwise you may be breaking the law and the author doesnt feel responsable
 for your actions. ;)
 
 
 ////[ Whats this all about?
 
 Chaosmap is an information gathering tool and dns / whois / web server scanner.
-It can be used to lookup DNS names with a dictionary with or without using a salt. 
-Salting for DNS means it will append numbers from 1-9 to the name in the dictionary 
-with or without a - and _ or a leading 0. Salting for Web stuff will try double 
+It can be used to lookup DNS names with a dictionary with or without using a salt.
+Salting for DNS means it will append numbers from 1-9 to the name in the dictionary
+with or without a - and _ or a leading 0. Salting for Web stuff will try double
 slashes and some directory traversal tricks.
 You can do reverse dns lookups of a whole ip range (with optional whois lookup) or
 make a dictionary scan for hidden paths on one webserver or a range of ip addresses.
 Optionally you can encode the path with url encoding and with google dict lookup mode
 chaosmap will first try to find the path on Google and only query the webserver if
 google has no search result. Last but not least it can be used to extract email addresses
-from domains using a Google search or perform a list of Google Hacking queries on 
+from domains using a Google search or perform a list of Google Hacking queries on
 your domain.
 Feel free to send patches, bug reports, dictionary additions or beer to balle@chaostal.de
 
 
 ////[ Installation
 
-You need Python 2.6 or higher.
+You need Python 2.6 or higher (but not Python 3!).
 
 
 ///[ Example usage:
@@ -38,7 +38,10 @@ You need Python 2.6 or higher.
 ./chaosmap.py -f dict -d your_domain -n -s
 
 # scan your webserver for hidden paths with url encoding via a http proxy
-./chaosmap.py -f dict -d your_domain -w -u -P 192.168.1.1:8080
+./chaosmap.py -f dictionaries/hidden_paths.txt -d your_domain -w -u -P 192.168.1.1:8080
+
+# scan your webserver for hidden files with special salting for backup files
+./chaosmap.py -f dictionaries/hidden_files.txt -d your_domain -w -B
 
 # reverse dns and whois lookup of ip range
 ./chaosmap.py -i 192.168.1.1-192.168.254.254 -W -n
@@ -68,7 +71,7 @@ You need Python 2.6 or higher.
 
 ////[ Licenses and Copyrights
 
-Chaosmap is licensed under GPLv3 
+Chaosmap is licensed under GPLv3
 httplib2 Copyright (c) 2006 by Joe Gregorio
 socks Python library copyright by Dan Haim (see lib/socks-LICENSE.txt)
 cymruwhois by Justin Azoff licensed under MIT
