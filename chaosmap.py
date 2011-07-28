@@ -257,7 +257,7 @@ def do_backup_salted_web_lookup(domain, path):
         Search for web backup files
         """
         prefix_chars = ('_', '#')
-        suffix_chars = ('~', '.back', '.bak', '.old', '.orig', '_backup')
+        suffix_chars = ('~', '~1', '.back', '.bak', '.old', '.orig', '_backup')
         date_formats = ('%Y-%m-%d', '%Y%m%d', '%Y%d%m', '%Y-%d-%m', '%d%m%Y', '%d%m%Y',
                         '%y-%m-%d', '%y%m%d', '%y%d%m', '%y-%d-%m', '%d%m%y', '%d%m%y')
 
